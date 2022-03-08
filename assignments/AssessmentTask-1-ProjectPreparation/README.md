@@ -1,4 +1,4 @@
-Task
+# Task
 1. Collaboration platform set up: nominate one platform, Teams/Slack/Canvas, that will be used as the platform to record and assess your teamwork throughout the semester.  Provide the platform address, and invited all groups member, academic supervisor, the course coordinator, and/or industry supervisors to this platform.  Communications should be already carried out at the online platform. Please remember to record all communications and documents at the Microsoft Teams/Slack/Canvas group discussion.
 
 2.  Provide the key information of your group kick-off meeting (with all the members and/or industry supervisor (if there is any):  when the  meeting was organised, number of attendance, and what objectives were achieved.  Please note that the kick-off meeting has to be completed prior to Aug 8.
