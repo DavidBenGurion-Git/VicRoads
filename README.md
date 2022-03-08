@@ -1,0 +1,2 @@
+# Introduction
+This is a VicRoads project. As you may know, sensors are installed along our freeways. These sensors capture data about passing traffic such as speed, volume and lane occupancy. This project need identify a crash from this sensor data. Such identification will enable VicRoads to take appropriate action quickly. That is, after identifying such events, VicRoads’ Incident Response Service can clear incidents and help maintain traffic flow
