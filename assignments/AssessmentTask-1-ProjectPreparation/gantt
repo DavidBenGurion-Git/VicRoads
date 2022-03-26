@@ -1,0 +1,25 @@
+gantt
+    title The VicRoads
+    dateFormat  YYYY-MM-DD
+    section Collaboration platform
+    MS-team :t1, 2022-03-10, 3d
+    GitHub  :g1, 2022-03-10, 3d
+    section Research Proposal
+    Draft   :p1, 2022-03-26,  7d
+    Final   :after p1,  7d
+    section Project Preparation
+    Teamwork Contract  :after t1,  7d
+    Project management timetable    :after t1,  13d
+    section Data Description and Wrangling
+    Description :d1, 2022-03-18, 7d
+    Wrangling :after d1,  7d
+    section Model Design
+    Model Design :m1, 2022-4-4, 2022-05-15
+    section Progress Presentation
+    Discuss :ppd, 2022-04-22, 2d
+    slides :after ppd, 5d
+    section Final Report and Presentation
+    Writing :w1, 2022-05-01, 2022-06-19
+    Presentation :fp1, 2022-06-04, 7d
+    section Literature Review
+    Literature Review :l1, 2022-03-05, 2022-06-10
