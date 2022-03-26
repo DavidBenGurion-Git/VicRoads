@@ -73,17 +73,20 @@ A template of Teamwork Contract can be found here.  Download here.You can add mo
 05.03.2022 - start Literature Review, prepare proposal
 13.03.2022 - done Collaboration platform set up
 20.03.2022 - done Teamwork Contract with signed agreement and Project management timetable/plan
-When we get dataset, need write data description immediately
+
 
 25.03.2022 - done Assignment Task 1_1 Project Preparation report (3 pages)
 26.03.2022 - start proposal draft
 
-31.03.2022 - done proposal draft, let Sevvandi have a look
+02.04. 2022 - Done data description and Data Cleaning Wrangling
+03.04.2022 - done proposal draft, let Sevvandi have a look
 
+04.04.2022 - Start model design
 09.04.2022 - done literature review
 10.04.2022 - start final writing Proposal
 15.04.2022 - done Project Proposal
 
+20.04.2022 - Done model design
 22.04.2022 - start make slides for Assessment task 2 Progress Presentation
 30.04.2022 - done submit progress slides
 01.05.2022 - start Final Report
