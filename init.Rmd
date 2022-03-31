@@ -35,6 +35,28 @@ fileName = paste("./dataset/data/", fileList[1], sep="")
 data <- read_csv(fileName)
 data$Date <- as.Date(data$Date, "%d/%m/%Y")
 data <- data %>% mutate(datetime = as.POSIXct(paste(Date, Time), format="%Y-%m-%d %H:%M:%S"))
+```
+
+# Find Incident==TRUE
+```{r}
+data <- data %>% select(Date, datetime, Detector_Id, Occupancy, Volume, Speed_Sum, Speed_Obs, Available, Incident, Failed) %>% filter( Incident==TRUE)
+```
+
+```{r}
+for(i in 2:length(fileList)) {
+  fileName = paste("./dataset/data/", fileList[i], sep="")
+  dataTmp <- read_csv(fileName)
+  dataTmp$Date <- as.Date(dataTmp$Date, "%d/%m/%Y")
+  
+  dataTmp <- dataTmp %>% mutate(datetime = as.POSIXct(paste(Date, Time), format="%Y-%m-%d %H:%M:%S"))
+  dataTmp <- dataTmp %>% select(Date, datetime, Detector_Id, Occupancy, Volume, Speed_Sum, Speed_Obs, Available, Incident, Failed) %>% filter( Incident==TRUE)
+  data <- rbind(data, dataTmp)
+}
+rm(dataTmp)
+```
+
+```{r}
+tmp <- data %>% select(Date, datetime, Detector_Id, Occupancy, Volume, Speed_Sum, Speed_Obs, Available, Incident, Failed) %>% filter(Date == as.Date("2019-02-24") & Detector_Id==1096944)
 
 rm(fileList)
 rm(fileName)
@@ -113,9 +135,7 @@ tmp2 <- xts(tmp$Volume, order.by=tmp$datetime)
 
 
 
-```{r}
-tmp <- data %>% select(Date, datetime, Detector_Id, Occupancy, Volume, Speed_Sum, Speed_Obs, Available, Incident, Failed) %>% filter(Date == as.Date("2019-02-24") & Detector_Id==1096944)
-```
+
 
 ```{r}
 tmp2 <- xts(tmp$Volume, order.by=tmp$datetime)
@@ -134,12 +154,5 @@ tail(tmp2)
 plot.xts(tmp2$Volume, main = "Volume")
 ```
 
-```{r}
-for(i in 2:length(fileList)) {
-  fileName = paste("./dataset/data/", fileList[i], sep="")
-  dataTmp <- read_csv(fileName)
-  data <- rbind(data, dataTmp)
-}
-rm(dataTmp)
-```
+
 
