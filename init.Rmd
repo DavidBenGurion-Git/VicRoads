@@ -1,0 +1,145 @@
+---
+title: "VicRoads"
+output: word_document
+date: '2022-03-31'
+---
+
+```{r}
+# Install the package
+#install.packages("lubridate")
+#install.packages("xts")
+install.packages("TSstudio")
+```
+
+```{r}
+library(readr)
+# Load the package
+library(lubridate)
+library(dplyr)
+library(xts)
+library(TSstudio)
+```
+
+```{r}
+setwd("~/Documents/VicRoads")
+```
+
+```{r}
+Detector <- read_csv("./dataset/DetectorLocations.csv")
+```
+
+```{r}
+fileList <- list.files(path="./dataset/data", pattern=NULL, all.files=FALSE, full.names=FALSE)
+
+fileName = paste("./dataset/data/", fileList[1], sep="")
+data <- read_csv(fileName)
+data$Date <- as.Date(data$Date, "%d/%m/%Y")
+data <- data %>% mutate(datetime = as.POSIXct(paste(Date, Time), format="%Y-%m-%d %H:%M:%S"))
+
+rm(fileList)
+rm(fileName)
+```
+
+```{r}
+getAllLaneID <- function(ID) {
+  getLinkKey <- Detector %>% select(Id, Name, Link_Key, X, Y) %>% filter(Id==ID)
+  getLinkKey <- getLinkKey$Link_Key
+  getAllLane <- Detector %>% select(Id, Name, Link_Key, X, Y) %>% filter(Link_Key==getLinkKey)
+  return (getAllLane$Id)
+}
+```
+
+```{r}
+getData <- function(IDinput, DateInput, colName) {
+  tmp <- data %>% select(Date, datetime, Detector_Id, Occupancy, Volume, Speed_Sum, Speed_Obs, Available, Incident, Failed) %>% filter(Date == DateInput & Detector_Id==IDinput)
+  tmp <- tmp[, c('datetime', colName)]
+  colnames(tmp) <- c('datetime', IDinput)
+  return(tmp)
+}
+```
+
+```{r}
+LaneIDList <- getAllLaneID(1096944)
+```
+
+```{r}
+test <- getData(LaneIDList[1], as.Date("2019-02-24"), "Volume")
+for(i in 2:length(LaneIDList)) {
+  tmp <- getData(LaneIDList[i], as.Date("2019-02-24"), "Volume")
+  test <- test %>% left_join(tmp, by="datetime")
+}
+rm(tmp)
+```
+
+
+
+
+```{r}
+colnames(test[1:length(LaneIDList)+1])
+```
+
+```{r}
+library(ggplot2)
+
+newtest <- test %>% gather(`1096944`, `1096946`,`1096951`, `1096953`, ``, key = "ID", value = "value")
+```
+```{r}
+# Heatmap 
+ggplot(newtest, aes(datetime, ID, fill= value)) + 
+  geom_tile()+ ggtitle("Volume")
+```
+
+
+
+
+
+
+
+
+
+
+
+```{r}
+tmp2 <- xts(tmp$Volume, order.by=tmp$datetime)
+```
+
+
+
+
+
+
+
+
+
+
+
+```{r}
+tmp <- data %>% select(Date, datetime, Detector_Id, Occupancy, Volume, Speed_Sum, Speed_Obs, Available, Incident, Failed) %>% filter(Date == as.Date("2019-02-24") & Detector_Id==1096944)
+```
+
+```{r}
+tmp2 <- xts(tmp$Volume, order.by=tmp$datetime)
+```
+
+```{r}
+plot(tmp2)
+```
+
+```{r}
+head(tmp2)
+tail(tmp2)
+```
+
+```{r}
+plot.xts(tmp2$Volume, main = "Volume")
+```
+
+```{r}
+for(i in 2:length(fileList)) {
+  fileName = paste("./dataset/data/", fileList[i], sep="")
+  dataTmp <- read_csv(fileName)
+  data <- rbind(data, dataTmp)
+}
+rm(dataTmp)
+```
+
