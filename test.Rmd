@@ -1,24 +1,8 @@
 ---
-title: "VicRoads"
-output: word_document
-date: '2022-03-31'
+title: "Untitled"
+output: html_document
+date: '2022-04-05'
 ---
-
-```{r}
-# Install the package
-#install.packages("lubridate")
-#install.packages("xts")
-install.packages("TSstudio")
-```
-
-```{r}
-library(readr)
-# Load the package
-library(lubridate)
-library(dplyr)
-library(xts)
-library(TSstudio)
-```
 
 ```{r}
 setwd("~/Documents/VicRoads")
@@ -31,35 +15,29 @@ Detector <- read_csv("./dataset/DetectorLocations.csv")
 ```{r}
 fileList <- list.files(path="./dataset/data", pattern=NULL, all.files=FALSE, full.names=FALSE)
 
-fileName = paste("./dataset/data/", fileList[10], sep="")
+fileName = paste("./dataset/data/", fileList[1], sep="")
 data <- read_csv(fileName)
 ```
 
 ```{r}
 data$Date <- as.Date(data$Date, "%d/%m/%Y")
+data <- data %>% select(Date, Time, Detector_Id, Occupancy, Volume, Speed_Sum, Speed_Obs)
 data <- data %>% mutate(datetime = as.POSIXct(paste(Date, Time), format="%Y-%m-%d %H:%M:%S"))
 ```
 
-# Find Incident==TRUE
-```{r}
-data <- data %>% select(Date, datetime, Detector_Id, Occupancy, Volume, Speed_Sum, Speed_Obs, Available, Incident, Failed) %>% filter( Incident==TRUE)
-```
-
-```{r}
+```{r, message=FALSE}
 for(i in 2:length(fileList)) {
   fileName = paste("./dataset/data/", fileList[i], sep="")
   dataTmp <- read_csv(fileName)
   dataTmp$Date <- as.Date(dataTmp$Date, "%d/%m/%Y")
   
+  dataTmp <- dataTmp %>% select(Date, Time, Detector_Id, Occupancy, Volume, Speed_Sum, Speed_Obs)
+  
   dataTmp <- dataTmp %>% mutate(datetime = as.POSIXct(paste(Date, Time), format="%Y-%m-%d %H:%M:%S"))
-  dataTmp <- dataTmp %>% select(Date, datetime, Detector_Id, Occupancy, Volume, Speed_Sum, Speed_Obs, Available, Incident, Failed) %>% filter( Incident==TRUE)
+  
   data <- rbind(data, dataTmp)
 }
 rm(dataTmp)
-```
-
-```{r}
-tail(data$Time)
 ```
 
 ```{r}
@@ -100,9 +78,6 @@ for(i in 2:length(LaneIDList)) {
 rm(tmp)
 ```
 
-
-
-
 ```{r}
 colnames(test[1:length(LaneIDList)+1])
 ```
@@ -112,54 +87,9 @@ library(ggplot2)
 
 newtest <- test %>% gather(`1096944`, `1096946`,`1096951`, `1096953`, ``, key = "ID", value = "value")
 ```
+
 ```{r}
 # Heatmap 
 ggplot(newtest, aes(datetime, ID, fill= value)) + 
   geom_tile()+ ggtitle("Volume")
 ```
-
-
-
-
-
-
-
-
-
-
-
-```{r}
-tmp2 <- xts(tmp$Volume, order.by=tmp$datetime)
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-```{r}
-tmp2 <- xts(tmp$Volume, order.by=tmp$datetime)
-```
-
-```{r}
-plot(tmp2)
-```
-
-```{r}
-head(tmp2)
-tail(tmp2)
-```
-
-```{r}
-plot.xts(tmp2$Volume, main = "Volume")
-```
-
-
-
